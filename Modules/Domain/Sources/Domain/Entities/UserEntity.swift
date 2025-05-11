@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct UserEntity: Sendable, Identifiable {
+public struct UserEntity: Sendable, Identifiable, Equatable {
     public let login: String
     public let id: Int
     public let nodeID: String
