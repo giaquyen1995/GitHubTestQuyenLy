@@ -1,5 +1,5 @@
 //
-//  BaseRequest.swift
+//  APIRequest.swift
 //  Data
 //
 //  Created by QuyenLG on 10/5/25.
