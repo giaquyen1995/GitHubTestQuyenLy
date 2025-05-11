@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		20E723EA2DCF211900DCDBAE /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = 20E723E92DCF211900DCDBAE /* Data */; };
+		20E723EC2DCF211900DCDBAE /* Domain in Frameworks */ = {isa = PBXBuildFile; productRef = 20E723EB2DCF211900DCDBAE /* Domain */; };
+		20E723EE2DCF211900DCDBAE /* Presentation in Frameworks */ = {isa = PBXBuildFile; productRef = 20E723ED2DCF211900DCDBAE /* Presentation */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		20E7232E2DCF0B0B00DCDBAE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -29,18 +35,6 @@
 		20E723372DCF0B0B00DCDBAE /* GitHubTestQuyenLyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GitHubTestQuyenLyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		20E7234C2DCF0B2F00DCDBAE /* Exceptions for "Modules" folder in "GitHubTestQuyenLy" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Data,
-				Domain,
-				Presentation,
-			);
-			target = 20E7231C2DCF0B0A00DCDBAE /* GitHubTestQuyenLy */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		20E7231F2DCF0B0A00DCDBAE /* GitHubTestQuyenLy */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -59,9 +53,6 @@
 		};
 		20E7234A2DCF0B0F00DCDBAE /* Modules */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				20E7234C2DCF0B2F00DCDBAE /* Exceptions for "Modules" folder in "GitHubTestQuyenLy" target */,
-			);
 			path = Modules;
 			sourceTree = "<group>";
 		};
@@ -72,6 +63,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20E723EC2DCF211900DCDBAE /* Domain in Frameworks */,
+				20E723EE2DCF211900DCDBAE /* Presentation in Frameworks */,
+				20E723EA2DCF211900DCDBAE /* Data in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,6 +93,7 @@
 				20E7231F2DCF0B0A00DCDBAE /* GitHubTestQuyenLy */,
 				20E723302DCF0B0B00DCDBAE /* GitHubTestQuyenLyTests */,
 				20E7233A2DCF0B0B00DCDBAE /* GitHubTestQuyenLyUITests */,
+				20E723E82DCF211900DCDBAE /* Frameworks */,
 				20E7231E2DCF0B0A00DCDBAE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -111,6 +106,13 @@
 				20E723372DCF0B0B00DCDBAE /* GitHubTestQuyenLyUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		20E723E82DCF211900DCDBAE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -134,6 +136,9 @@
 			);
 			name = GitHubTestQuyenLy;
 			packageProductDependencies = (
+				20E723E92DCF211900DCDBAE /* Data */,
+				20E723EB2DCF211900DCDBAE /* Domain */,
+				20E723ED2DCF211900DCDBAE /* Presentation */,
 			);
 			productName = GitHubTestQuyenLy;
 			productReference = 20E7231D2DCF0B0A00DCDBAE /* GitHubTestQuyenLy.app */;
@@ -426,6 +431,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -455,6 +461,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -580,6 +587,21 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		20E723E92DCF211900DCDBAE /* Data */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Data;
+		};
+		20E723EB2DCF211900DCDBAE /* Domain */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Domain;
+		};
+		20E723ED2DCF211900DCDBAE /* Presentation */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Presentation;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 20E723152DCF0B0A00DCDBAE /* Project object */;
 }
