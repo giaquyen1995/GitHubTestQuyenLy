@@ -43,7 +43,7 @@ public final class UsersListViewModel: ObservableObject {
     func fetchUsers() {
         guard !isLoading, hasLoadMore else { return }
         isLoading = true
-        let since = currentPage * usersListUseCase.pagingConfiguration.pageSize
+        let since = currentPage * usersListUseCase.pageSize
         usersListUseCase.fetchUsers(since: since)
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
@@ -89,6 +89,7 @@ public final class UsersListViewModel: ObservableObject {
     func refreshUsers() {
         currentPage = 0
         users.removeAll()
+        usersListUseCase.removeAllCached()
         fetchUsers()
     }
 }

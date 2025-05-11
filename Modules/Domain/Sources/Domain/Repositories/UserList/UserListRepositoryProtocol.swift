@@ -12,4 +12,5 @@ public protocol UserListRepositoryProtocol {
     func fetchUsers(perPage: Int, since: Int) -> AnyPublisher<[UserEntity], Error>
     func getCachedUsers() -> [UserEntity]
     func saveCacheUsers(_ users: [UserEntity])
+    func removeAllCached()
 }

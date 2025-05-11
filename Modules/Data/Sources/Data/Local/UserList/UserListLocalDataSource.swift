@@ -26,4 +26,13 @@ public final class UserListLocalDataSource: UserListLocalDataSourceProtocol {
             print("Failed to cache users: \(error.localizedDescription)")
         }
     }
+    
+    public func removeAllCached() {
+        do {
+            try realmManager.deleteAll(RealmUser.self)
+        } catch {
+            print("Failed to remove cached users: \(error.localizedDescription)")
+        }
+    }
+    
 }

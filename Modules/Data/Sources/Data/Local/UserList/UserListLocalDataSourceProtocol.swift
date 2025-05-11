@@ -10,4 +10,5 @@ import RealmSwift
 public protocol UserListLocalDataSourceProtocol {
     func getCachedUsers() -> [RealmUser]
     func saveCacheUsers(_ users: [RealmUser])
+    func removeAllCached()
 }

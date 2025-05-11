@@ -38,4 +38,8 @@ public final class UserListRepository: UserListRepositoryProtocol {
         let realmUsers = users.map { $0.toRealmUser() }
         localDataSource.saveCacheUsers(realmUsers)
     }
+    
+    public func removeAllCached() {
+        localDataSource.removeAllCached()
+    }
 }

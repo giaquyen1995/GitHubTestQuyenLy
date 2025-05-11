@@ -11,4 +11,5 @@ public protocol RealmManagerProtocol {
     func get<T: Object>(_ type: T.Type) -> [T]
     func write<T: Object>(_ objects: [T]) throws
     func write<T: Object>(_ object: T) throws
+    func deleteAll<T: Object>(_ type: T.Type) throws
 }

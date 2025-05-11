@@ -201,6 +201,7 @@ final class UserListRepositoryTests: XCTestCase {
 final class MockUserListLocalDataSource: UserListLocalDataSourceProtocol {
     var mockCachedUsers: [RealmUser]?
     var savedUsers: [RealmUser]?
+    var didCallRemoveAllCached = false
     
     func getCachedUsers() -> [RealmUser] {
         return mockCachedUsers ?? []
@@ -208,5 +209,11 @@ final class MockUserListLocalDataSource: UserListLocalDataSourceProtocol {
     
     func saveCacheUsers(_ users: [RealmUser]) {
         savedUsers = users
+    }
+    
+    func removeAllCached() {
+        didCallRemoveAllCached = true
+        mockCachedUsers = nil
+        savedUsers = nil
     }
 }

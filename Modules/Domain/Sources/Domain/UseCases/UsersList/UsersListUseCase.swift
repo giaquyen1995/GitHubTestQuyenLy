@@ -12,24 +12,24 @@ public protocol UsersListUseCaseProtocol {
     func fetchUsers(since: Int) -> AnyPublisher<[UserEntity], Error>
     func getCachedUsers() -> [UserEntity]
     func saveCachedUsers(_ users: [UserEntity])
-    var pagingConfiguration: PagingConfiguration { get }
+    func removeAllCached()
+    var pageSize: Int { get }
 }
 
 public final class UsersListUseCase: UsersListUseCaseProtocol {
-    public var pagingConfiguration: PagingConfiguration
+    public var pageSize: Int = 20
+    
     private let userListRepository: UserListRepositoryProtocol
     
     public init(
-        pagingConfiguration: PagingConfiguration = UserListPagingConfiguration(),
         userListRepository: UserListRepositoryProtocol
     ) {
-        self.pagingConfiguration = pagingConfiguration
         self.userListRepository = userListRepository
     }
     
     public func fetchUsers(since: Int) -> AnyPublisher<[UserEntity], any Error> {
         return userListRepository.fetchUsers(
-            perPage: pagingConfiguration.pageSize,
+            perPage: pageSize,
             since: since
         )
         .receive(on: DispatchQueue.main)
@@ -45,5 +45,9 @@ public final class UsersListUseCase: UsersListUseCaseProtocol {
     
     public func saveCachedUsers(_ users: [UserEntity]) {
         userListRepository.saveCacheUsers(users)
+    }
+    
+    public func removeAllCached() {
+        userListRepository.removeAllCached()
     }
 }
