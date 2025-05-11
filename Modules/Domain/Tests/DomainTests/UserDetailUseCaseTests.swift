@@ -1,43 +1,39 @@
 //
 //  Untitled.swift
-//  Data
+//  Domain
 //
 //  Created by QuyenLG on 11/5/25.
 //
 
 import XCTest
 import Combine
-@testable import Data
 @testable import Domain
 
-final class UserDetailRepositoryTests: XCTestCase {
-    private var sut: UserDetailRepository!
-    private var mockAPIService: MockAPIService!
+final class UserDetailUseCaseTests: XCTestCase {
+    private var sut: UserDetailUseCase!
+    private var mockRepository: MockUserDetailRepository!
     private var cancellables: Set<AnyCancellable>!
     
     override func setUp() {
         super.setUp()
-        mockAPIService = MockAPIService()
-        sut = UserDetailRepository(apiService: mockAPIService)
+        mockRepository = MockUserDetailRepository()
+        sut = UserDetailUseCase(userDetailRepository: mockRepository)
         cancellables = []
     }
     
     override func tearDown() {
         sut = nil
-        mockAPIService = nil
+        mockRepository = nil
         cancellables = nil
         super.tearDown()
     }
     
-    func test_fetchUserDetail_success() {
-        let expectedUser = MockFactory.createMockUserDTO()
-        mockAPIService.mockResult = .success(expectedUser)
-        let expectation = expectation(description: "Should receive user")
-        
+    func test_fetchUserDetails_success() {
+        let expectation = expectation(description: "Should receive user details")
         var receivedUser: UserEntity?
         var receivedError: Error?
         
-        sut.fetchUserDetail(loginUserName: "testUser")
+        sut.fetchUserDetails(loginUserName: "testUser")
             .sink { completion in
                 if case .failure(let error) = completion {
                     receivedError = error
@@ -47,23 +43,20 @@ final class UserDetailRepositoryTests: XCTestCase {
                 receivedUser = user
             }
             .store(in: &cancellables)
-       
+        
         wait(for: [expectation], timeout: 1)
         XCTAssertNil(receivedError)
         XCTAssertNotNil(receivedUser)
-        XCTAssertEqual(receivedUser?.login, expectedUser.login)
+        XCTAssertEqual(receivedUser?.login, "testUser")
     }
     
-    func test_fetchUserDetail_failure() {
-        struct TestError: Error {}
-        let expectedError = TestError()
-        mockAPIService.mockResult = .failure(expectedError)
+    func test_fetchUserDetails_failure() {
+        mockRepository.mockError = NSError(domain: "test", code: -1)
         let expectation = expectation(description: "Should receive error")
-        
         var receivedUser: UserEntity?
         var receivedError: Error?
         
-        sut.fetchUserDetail(loginUserName: "testUser")
+        sut.fetchUserDetails(loginUserName: "testUser")
             .sink { completion in
                 if case .failure(let error) = completion {
                     receivedError = error
@@ -77,6 +70,28 @@ final class UserDetailRepositoryTests: XCTestCase {
         wait(for: [expectation], timeout: 1)
         XCTAssertNotNil(receivedError)
         XCTAssertNil(receivedUser)
+    }
+    
+    func test_fetchUserDetails_withEmptyUsername() {
+        let expectation = expectation(description: "Should handle empty username")
+        var receivedUser: UserEntity?
+        var receivedError: Error?
+        
+        sut.fetchUserDetails(loginUserName: "")
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    receivedError = error
+                }
+                expectation.fulfill()
+            } receiveValue: { user in
+                receivedUser = user
+            }
+            .store(in: &cancellables)
+        
+        wait(for: [expectation], timeout: 1)
+        XCTAssertNil(receivedError)
+        XCTAssertNotNil(receivedUser)
+        XCTAssertEqual(receivedUser?.login, "testUser")
     }
 }
 

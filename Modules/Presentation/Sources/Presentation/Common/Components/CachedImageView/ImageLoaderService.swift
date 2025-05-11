@@ -19,7 +19,7 @@ public final class ImageLoaderService: ObservableObject {
     public init(
         cacheManager: ImageCacheManager = ImageCacheManager.shared,
         urlSession: URLSession = .shared,
-        cacheDuration: TimeInterval = 5 * 60 // 5 minutes
+        cacheDuration: TimeInterval = 5 * 60 
     ) {
         self.cacheManager = cacheManager
         self.urlSession = urlSession

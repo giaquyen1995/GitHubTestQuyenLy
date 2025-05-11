@@ -82,31 +82,3 @@ public struct UserEntity: Sendable, Identifiable {
         self.following = following
     }
 }
-
-public extension UserEntity {
-    static let mock = UserEntity(
-        login: "lukesutton",
-        id: 109,
-        nodeID: "MDQ6VXNlcjEwOQ==",
-        avatarURL: "https://avatars.githubusercontent.com/u/109?v=4",
-        gravatarID: "",
-        url: "https://api.github.com/users/lukesutton",
-        htmlURL: "https://github.com/lukesutton",
-        followersURL: "https://api.github.com/users/lukesutton/followers",
-        followingURL: "https://api.github.com/users/lukesutton/following{/other_user}",
-        gistsURL: "https://api.github.com/users/lukesutton/gists{/gist_id}",
-        starredURL: "https://api.github.com/users/lukesutton/starred{/owner}{/repo}",
-        subscriptionsURL: "https://api.github.com/users/lukesutton/subscriptions",
-        organizationsURL: "https://api.github.com/users/lukesutton/orgs",
-        reposURL: "https://api.github.com/users/lukesutton/repos",
-        eventsURL: "https://api.github.com/users/lukesutton/events{/privacy}",
-        receivedEventsURL: "https://api.github.com/users/lukesutton/received_events",
-        type: "User",
-        userViewType: "public",
-        location: "",
-        blog: "http://souja.net",
-        isSiteAdmin: false,
-        followers: 50,
-        following: 100
-    )
-}

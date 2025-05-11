@@ -141,7 +141,7 @@ final class UserListRepositoryTests: XCTestCase {
         XCTAssertEqual(mockLocalDataSource.savedUsers?.count, 0)
     }
         
-    func test_fetchUsers_withZeroPerPage() async throws {
+    func test_fetchUsers_withZeroPerPage() {
         let mockUsers: [UserDTO] = []
         mockAPIService.mockResult = .success(mockUsers)
         
@@ -164,12 +164,12 @@ final class UserListRepositoryTests: XCTestCase {
             )
             .store(in: &cancellables)
         
-        await fulfillment(of: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 1)
         XCTAssertNil(receivedError)
         XCTAssertEqual(receivedUsers?.count, 0)
     }
     
-    func test_fetchUsers_withNegativeSince() async throws {
+    func test_fetchUsers_withNegativeSince() {
         let mockUsers = [MockFactory.createMockUserDTO()]
         mockAPIService.mockResult = .success(mockUsers)
         
@@ -192,7 +192,7 @@ final class UserListRepositoryTests: XCTestCase {
             )
             .store(in: &cancellables)
         
-        await fulfillment(of: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 1)
         XCTAssertNil(receivedError)
         XCTAssertEqual(receivedUsers?.count, 1)
     }
