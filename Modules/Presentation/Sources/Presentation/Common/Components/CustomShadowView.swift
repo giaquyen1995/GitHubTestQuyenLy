@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct ShadowEffectModifier: ViewModifier {
+public struct CustomShadowView: ViewModifier {
     let shadowColor: Color
     let shadowOpacity: CGFloat
     let shadowRadius: CGFloat

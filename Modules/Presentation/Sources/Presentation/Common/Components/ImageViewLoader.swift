@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-public struct CachedImageView: View {
+public struct ImageViewLoader: View {
     @StateObject private var imageLoader: ImageLoaderService
     
     let url: URL?

@@ -33,13 +33,13 @@ public struct UserProfileCardView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(.white)
         .cornerRadius(UIConstants.CornerRadius.small)
-        .modifier(ShadowEffectModifier(shadowColor: .black.opacity(0.3), shadowRadius: 3.0))
+        .modifier(CustomShadowView(shadowColor: .black.opacity(0.3), shadowRadius: 3.0))
         .padding(.horizontal, UIConstants.Padding.large)
         .padding(.vertical, UIConstants.Padding.medium)
     }
     
     private var profileImageView: some View {
-        CachedImageView(url: avatar, imageSize: UIConstants.ImageSize.large)
+        ImageLoaderView(url: avatar, imageSize: 80)
             .padding(UIConstants.Padding.small)
             .background(.gray.opacity(0.08))
             .cornerRadius(UIConstants.CornerRadius.small)

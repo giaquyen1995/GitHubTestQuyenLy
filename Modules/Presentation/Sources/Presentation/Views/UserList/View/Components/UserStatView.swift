@@ -28,8 +28,8 @@ public struct UserStatView: View {
                 Circle()
                     .fill(Color.gray.opacity(0.1))
                     .frame(
-                        width: UIConstants.ImageSize.small,
-                        height: UIConstants.ImageSize.small
+                        width: 40,
+                        height: 40
                     )
                 
                 Image(systemName: iconName)

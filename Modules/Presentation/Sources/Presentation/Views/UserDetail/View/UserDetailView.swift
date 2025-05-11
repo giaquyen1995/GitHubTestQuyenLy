@@ -57,13 +57,13 @@ public struct UserDetailView: View {
         HStack(spacing: 40) {
             UserStatView(
                 iconName: "person.2.fill",
-                countText: "\(FollowCountFormatter.format(for: viewModel.followersCount))",
+                countText: viewModel.followersCount,
                 label: "Followers"
             )
             
             UserStatView(
                 iconName: "person.2.circle.fill",
-                countText: "\(FollowCountFormatter.format(for: viewModel.followingCount))",
+                countText: viewModel.followersCount,
                 label: "Following"
             )
         }

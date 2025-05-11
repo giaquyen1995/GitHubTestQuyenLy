@@ -19,10 +19,4 @@ public struct UIConstants {
         static let medium: CGFloat = 12
         static let large: CGFloat = 16
     }
-    
-    public struct ImageSize {
-        static let small: CGFloat = 40
-        static let medium: CGFloat = 60
-        static let large: CGFloat = 80
-    }
 }

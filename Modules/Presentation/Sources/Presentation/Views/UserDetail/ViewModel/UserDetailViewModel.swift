@@ -26,16 +26,16 @@ public final class UserDetailViewModel: ObservableObject {
         return user?.location ?? ""
     }
     
-    var followersCount: Int {
-        return user?.followers ?? 0
+    var followersCount: String {
+        return formatFollow(for: user?.followers ?? 0)
     }
     
-    var followingCount: Int {
-        return user?.following ?? 0
+    var followingCount: String {
+        return formatFollow(for: user?.following ?? 0)
     }
     
     var blog: String {
-        return user?.blog ?? ""
+        return user?.blog ?? "No blog"
     }
     
     private var cancellables: Set<AnyCancellable> = []
@@ -64,4 +64,9 @@ public final class UserDetailViewModel: ObservableObject {
             }
             .store(in: &cancellables)
     }
+    
+    func formatFollow(for follow: Int, max: Int = 100) -> String {
+        return follow > max ? "\(max)+" : "\(follow)"
+    }
+
 }
