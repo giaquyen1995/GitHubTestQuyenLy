@@ -65,14 +65,25 @@ public final class UsersListViewModel: ObservableObject {
         }
     }
     
-    private func updateUsersList(_ users: [UserEntity], since: Int) {
+    private func updateUsersList(_ newUsers: [UserEntity], since: Int) {
+        let uniqueNewUsers = removeDuplicates(from: newUsers)
+        
         if currentPage == 0 {
-            self.users = users
+            self.users = uniqueNewUsers
         } else {
-            self.users.append(contentsOf: users)
+            let combinedUsers = users + uniqueNewUsers
+            self.users = removeDuplicates(from: combinedUsers)
         }
+        
         currentPage += 1
-        hasLoadMore = !users.isEmpty
+        hasLoadMore = !newUsers.isEmpty
+    }
+    
+    private func removeDuplicates(from users: [UserEntity]) -> [UserEntity] {
+        var seen = Set<String>()
+        return users.filter { user in
+            seen.insert(user.login).inserted
+        }
     }
     
     func refreshUsers() {
