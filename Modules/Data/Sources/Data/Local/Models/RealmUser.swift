@@ -30,13 +30,11 @@ public class RealmUser: Object {
     @Persisted var location: String?
     @Persisted var blog: String?
     @Persisted var siteAdmin: Bool = false
-
     @Persisted var followers: Int = 0
     @Persisted var following: Int = 0
 
-    // Add a primary key if needed
     public override static func primaryKey() -> String? {
-        return "login"  // Assuming 'login' is unique, otherwise choose another field
+        return "login"
     }
 }
 

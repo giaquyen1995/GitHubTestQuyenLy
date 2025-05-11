@@ -34,9 +34,7 @@ public final class UsersListUseCase: UsersListUseCaseProtocol {
         )
         .receive(on: DispatchQueue.main)
         .handleEvents(receiveOutput: { [weak self] users in
-            if since == 0 {
-                self?.saveCachedUsers(users)
-            }
+            self?.saveCachedUsers(users)
         })
         .eraseToAnyPublisher()
     }
