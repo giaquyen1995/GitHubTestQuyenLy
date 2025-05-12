@@ -32,36 +32,68 @@ final class UsersListViewModelTests: XCTestCase {
         XCTAssertFalse(sut.showErrorAlert)
         XCTAssertEqual(sut.currentPage, 0)
     }
-        
+    
     func test_loadUsers_fromCache_whenCacheNotEmpty() {
-        let cachedUsers = [MockFactory.createMockUser(id: 1), MockFactory.createMockUser(id: 2)]
+        let cachedUsers = [MockFactory.createMockUser(login: "user1", id: 1), MockFactory.createMockUser(login: "user2", id: 2)]
         mockUseCase.mockCachedUsers = cachedUsers
+        mockUseCase.mockUsers = []
+        let expectation = expectation(description: "Should load cached users")
+        var loadedUsers: [UserEntity] = []
+        
+        sut.$state
+            .sink { state in
+                if case .loaded(let users) = state, !users.isEmpty {
+                    loadedUsers = users
+                    expectation.fulfill()
+                }
+            }
+            .store(in: &cancellables)
         
         sut.loadUsers()
         
-        XCTAssertEqual(sut.users.count, 2)
-        XCTAssertEqual(sut.users[0].id, cachedUsers[0].id)
+        wait(for: [expectation], timeout: 1)
+        
+        XCTAssertEqual(loadedUsers.count, 2, "Should have 2 users")
+        XCTAssertEqual(loadedUsers[0].id, cachedUsers[0].id, "First user ID should match")
+        XCTAssertEqual(loadedUsers[1].id, cachedUsers[1].id, "Second user ID should match")
     }
     
     func test_loadUsers_fromCache_whenCacheEmpty() {
+        let expectation = expectation(description: "Should handle empty cache")
         mockUseCase.mockCachedUsers = []
+        let mockUsers = [MockFactory.createMockUser(login: "user1", id: 1)]
+        mockUseCase.mockUsers = mockUsers
         
+        sut.$state
+            .dropFirst()
+            .sink { state in
+                if case .loading = state {
+                    expectation.fulfill()
+                }
+            }
+            .store(in: &cancellables)
+            
         sut.loadUsers()
         
-        XCTAssertTrue(sut.users.isEmpty)
+        wait(for: [expectation], timeout: 1)
+        XCTAssertTrue(sut.isLoading)
     }
-    
-    // MARK: - Fetch Users Tests
-    
+        
     func test_fetchUsers_success() {
         let expectation = expectation(description: "Should fetch users")
-        let mockUsers = [MockFactory.createMockUser(id: 1), MockFactory.createMockUser(id: 2)]
+        let mockUsers = [MockFactory.createMockUser(login: "user1", id: 1), MockFactory.createMockUser(login: "user2", id: 2)]
         mockUseCase.mockUsers = mockUsers
         
         sut.fetchUsers()
         
         sut.$state
             .dropFirst()
+            .filter { state in
+                if case .loaded(let users) = state, !users.isEmpty {
+                    return true
+                }
+                return false
+            }
             .sink { _ in
                 expectation.fulfill()
             }
@@ -105,16 +137,19 @@ final class UsersListViewModelTests: XCTestCase {
     }
     
     func test_fetchUsers_whenNoMoreData() {
-        // Given
         let expectation = expectation(description: "Should handle empty response")
         mockUseCase.mockUsers = []
         
-        // When
         sut.fetchUsers()
         
-        // Observe hasLoadMore changes
-        sut.$hasLoadMore
+        sut.$state
             .dropFirst()
+            .filter { state in
+                if case .loaded(let users) = state {
+                    return true
+                }
+                return false
+            }
             .sink { _ in
                 expectation.fulfill()
             }
@@ -128,18 +163,20 @@ final class UsersListViewModelTests: XCTestCase {
     // MARK: - Refresh Tests
     
     func test_refreshUsers() {
-        // Given
-        let initialUsers = [MockFactory.createMockUser(id: 1), MockFactory.createMockUser(id: 2)]
-        let refreshedUsers = [MockFactory.createMockUser(id: 3)]
+        let initialUsers = [MockFactory.createMockUser(login: "user1", id: 1), MockFactory.createMockUser(login: "user2", id: 2)]
+        let refreshedUsers = [MockFactory.createMockUser(login: "user3", id: 3)]
         mockUseCase.mockUsers = initialUsers
         
-        // When - Initial Load
         let loadExpectation = expectation(description: "Should load initial users")
         sut.loadUsers()
         
-        // Wait for initial load
         sut.$state
-            .filter { !$0.users.isEmpty }
+            .filter { state in
+                if case .loaded(let users) = state, !users.isEmpty {
+                    return true
+                }
+                return false
+            }
             .first()
             .sink { _ in
                 loadExpectation.fulfill()
@@ -148,22 +185,24 @@ final class UsersListViewModelTests: XCTestCase {
         
         wait(for: [loadExpectation], timeout: 1)
         
-        // When - Refresh
         let refreshExpectation = expectation(description: "Should refresh users")
         mockUseCase.mockUsers = refreshedUsers
         
-        let refreshSubscription = sut.$state
-            .dropFirst()
-            .filter { $0.users == refreshedUsers }
+        sut.refreshUsers()
+        
+        sut.$state
+            .filter { state in
+                if case .loaded(let users) = state, users == refreshedUsers {
+                    return true
+                }
+                return false
+            }
             .first()
             .sink { _ in
                 refreshExpectation.fulfill()
             }
             .store(in: &cancellables)
         
-        sut.refreshUsers()
-        
-        // Then
         wait(for: [refreshExpectation], timeout: 1)
         
         XCTAssertEqual(sut.users, refreshedUsers)
