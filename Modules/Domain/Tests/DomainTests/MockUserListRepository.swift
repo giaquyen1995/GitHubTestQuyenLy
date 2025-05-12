@@ -10,8 +10,14 @@ import Combine
 
 final class MockUserListRepository: UserListRepositoryProtocol {
     private(set) var cachedUsers: [UserEntity] = []
+    var didCallRemoveAllCached = false
+    var mockError: Error?
     
     func fetchUsers(perPage: Int, since: Int) -> AnyPublisher<[UserEntity], Error> {
+        if let error = mockError {
+            return Fail(error: error).eraseToAnyPublisher()
+        }
+        
         return Just(
             [
                 MockFactory.createMockUser(),
@@ -31,5 +37,10 @@ final class MockUserListRepository: UserListRepositoryProtocol {
     
     func saveCacheUsers(_ users: [Domain.UserEntity]) {
         cachedUsers.append(contentsOf: users)
+    }
+    
+    func removeAllCached() {
+        didCallRemoveAllCached = true
+        cachedUsers.removeAll()
     }
 }

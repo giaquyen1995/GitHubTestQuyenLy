@@ -26,12 +26,6 @@ final class UserDetailViewModelTests: XCTestCase {
     
     func test_initialState() {
         XCTAssertNil(sut.user)
-        XCTAssertNil(sut.avatar)
-        XCTAssertEqual(sut.name, "")
-        XCTAssertEqual(sut.location, "")
-        XCTAssertEqual(sut.followersCount, 0)
-        XCTAssertEqual(sut.followingCount, 0)
-        XCTAssertEqual(sut.blog, "")
         XCTAssertEqual(sut.errorMessage, "")
         XCTAssertFalse(sut.showErrorAlert)
     }
@@ -58,12 +52,12 @@ final class UserDetailViewModelTests: XCTestCase {
         wait(for: [expectation], timeout: 1)
         
         XCTAssertEqual(sut.user?.id, mockUser.id)
-        XCTAssertEqual(sut.name, mockUser.login)
-        XCTAssertEqual(sut.location, mockUser.location)
-        XCTAssertEqual(sut.followersCount, mockUser.followers)
-        XCTAssertEqual(sut.followingCount, mockUser.following)
-        XCTAssertEqual(sut.blog, mockUser.blog)
-        XCTAssertEqual(sut.avatar, URL(string: mockUser.avatarURL))
+        XCTAssertEqual(sut.user?.login, mockUser.login)
+        XCTAssertEqual(sut.user?.location, mockUser.location)
+        XCTAssertEqual(sut.user?.followers, mockUser.followers)
+        XCTAssertEqual(sut.user?.following, mockUser.following)
+        XCTAssertEqual(sut.user?.blog, mockUser.blog)
+        XCTAssertEqual(sut.user?.avatarURL, mockUser.avatarURL)
     }
     
     func test_fetchUserDetails_failure() {
@@ -95,25 +89,10 @@ final class UserDetailViewModelTests: XCTestCase {
         mockUser = UserEntity(
             login: mockUser.login,
             id: mockUser.id,
-            nodeID: mockUser.nodeID,
             avatarURL: "invalid url",
-            gravatarID: mockUser.gravatarID,
-            url: mockUser.url,
             htmlURL: mockUser.htmlURL,
-            followersURL: mockUser.followersURL,
-            followingURL: mockUser.followingURL,
-            gistsURL: mockUser.gistsURL,
-            starredURL: mockUser.starredURL,
-            subscriptionsURL: mockUser.subscriptionsURL,
-            organizationsURL: mockUser.organizationsURL,
-            reposURL: mockUser.reposURL,
-            eventsURL: mockUser.eventsURL,
-            receivedEventsURL: mockUser.receivedEventsURL,
-            type: mockUser.type,
-            userViewType: mockUser.userViewType,
             location: mockUser.location,
             blog: mockUser.blog,
-            isSiteAdmin: mockUser.isSiteAdmin,
             followers: mockUser.followers,
             following: mockUser.following
         )
@@ -123,6 +102,6 @@ final class UserDetailViewModelTests: XCTestCase {
         sut.fetchUserDetails()
         
         // Then
-        XCTAssertNil(sut.avatar)
+        XCTAssertNil(sut.user?.avatarURL)
     }
 }

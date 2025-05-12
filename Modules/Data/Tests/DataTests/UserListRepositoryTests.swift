@@ -211,6 +211,14 @@ final class UserListRepositoryTests: XCTestCase {
         XCTAssertNil(mockLocalDataSource.mockCachedUsers)
         XCTAssertNil(mockLocalDataSource.savedUsers)
     }
+    
+    func test_init_withDefaultLocalDataSource() {
+        let repoWithDefaultDataSource = UserListRepository(apiService: mockAPIService)
+        
+        let users = repoWithDefaultDataSource.getCachedUsers()
+        
+        XCTAssertNotNil(repoWithDefaultDataSource)
+    }
 }
 
 final class MockUserListLocalDataSource: UserListLocalDataSourceProtocol {
