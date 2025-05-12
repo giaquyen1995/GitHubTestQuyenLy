@@ -22,7 +22,6 @@ public protocol UserDetailViewModelOutput {
 }
 
 public final class UserDetailViewModel: ObservableObject, UserDetailViewModelInput, UserDetailViewModelOutput {
-    // MARK: - Output Properties
     @Published public private(set) var user: UserEntity?
     @Published public private(set) var errorMessage: String = ""
     @Published public var showErrorAlert: Bool = false

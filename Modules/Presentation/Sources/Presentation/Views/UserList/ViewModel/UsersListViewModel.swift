@@ -103,7 +103,6 @@ public final class UsersListViewModel: ObservableObject, UsersListViewModelInput
     
     public func refreshUsers() {
         currentPage = 0
-        users.removeAll()
         usersListUseCase.removeAllCached()
         fetchUsers()
     }

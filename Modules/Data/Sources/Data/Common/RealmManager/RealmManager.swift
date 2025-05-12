@@ -24,7 +24,6 @@ public final class RealmManager: RealmManagerProtocol {
         }
     )) {
         self.configuration = configuration
-
         do {
             self.realm = try Realm(configuration: configuration)
         } catch {
