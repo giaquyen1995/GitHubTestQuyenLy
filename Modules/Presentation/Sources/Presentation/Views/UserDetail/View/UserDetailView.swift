@@ -63,7 +63,7 @@ public struct UserDetailView: View {
             
             UserStatView(
                 iconName: "person.2.circle.fill",
-                countText: viewModel.followersCount,
+                countText: viewModel.followingCount,
                 label: "Following"
             )
         }

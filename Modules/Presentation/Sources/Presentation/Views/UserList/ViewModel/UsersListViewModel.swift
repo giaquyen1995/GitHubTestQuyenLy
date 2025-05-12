@@ -9,6 +9,37 @@ import Foundation
 import Domain
 import Combine
 
+public enum UsersListState {
+    case idle
+    case loading
+    case loaded([UserEntity])
+    case loadMore([UserEntity])
+    case refresh
+    case error(String)
+    
+    var users: [UserEntity] {
+        switch self {
+        case .loaded(let users): return users
+        case .loadMore(let oldUsers): return oldUsers
+        default: return []
+        }
+    }
+    
+    var isLoading: Bool {
+        switch self {
+        case .loading, .loadMore: return true
+        default: return false
+        }
+    }
+    
+    var errorMessage: String {
+        switch self {
+        case .error(let message): return message
+            default: return ""
+        }
+    }
+}
+
 public protocol UsersListViewModelInput {
     func loadUsers()
     func fetchUsers()
@@ -25,15 +56,19 @@ public protocol UsersListViewModelOutput {
 }
 
 public final class UsersListViewModel: ObservableObject, UsersListViewModelInput, UsersListViewModelOutput {
-    @Published public private(set) var users: [UserEntity] = []
-    @Published public private(set) var isLoading = false
-    @Published public private(set) var hasLoadMore = true
-    @Published public private(set) var errorMessage: String = ""
+    @Published private(set) var state: UsersListState = .idle
     @Published public var showErrorAlert: Bool = false
+    @Published public private(set) var hasLoadMore = true
     
     private(set) var currentPage = 0
     private var cancellables: Set<AnyCancellable> = []
     private let usersListUseCase: UsersListUseCaseProtocol
+    
+    // MARK: - Output Properties
+    public var users: [UserEntity] { state.users }
+    public var isLoading: Bool { state.isLoading }
+    public var isLoadMore: Bool { state.isLoading }
+    public var errorMessage: String { state.errorMessage }
     
     public init(usersListUseCase: UsersListUseCaseProtocol) {
         self.usersListUseCase = usersListUseCase
@@ -51,13 +86,13 @@ public final class UsersListViewModel: ObservableObject, UsersListViewModelInput
     private func loadUsersFromCache() {
         let cachedUsers = usersListUseCase.getCachedUsers()
         if !cachedUsers.isEmpty {
-            self.users = cachedUsers
+            self.state = .loaded(cachedUsers)
         }
     }
     
     public func fetchUsers() {
         guard !isLoading, hasLoadMore else { return }
-        isLoading = true
+        state = currentPage == 0 ? .loading : .loadMore(self.users)
         let since = currentPage * usersListUseCase.pageSize
         usersListUseCase.fetchUsers(since: since)
             .subscribe(on: DispatchQueue.global())
@@ -73,9 +108,8 @@ public final class UsersListViewModel: ObservableObject, UsersListViewModelInput
     }
     
     private func handleCompletion(_ completion: Subscribers.Completion<Error>) {
-        isLoading = false
         if case .failure(let error) = completion {
-            errorMessage = error.localizedDescription
+            state = .error(error.localizedDescription)
             showErrorAlert = true
         }
     }
@@ -83,13 +117,15 @@ public final class UsersListViewModel: ObservableObject, UsersListViewModelInput
     private func updateUsersList(_ newUsers: [UserEntity], since: Int) {
         let uniqueNewUsers = removeDuplicates(from: newUsers)
         
+        let updatedUsers: [UserEntity]
         if currentPage == 0 {
-            self.users = uniqueNewUsers
+            updatedUsers = uniqueNewUsers
         } else {
             let combinedUsers = users + uniqueNewUsers
-            self.users = removeDuplicates(from: combinedUsers)
+            updatedUsers = removeDuplicates(from: combinedUsers)
         }
         
+        state = .loaded(updatedUsers)
         currentPage += 1
         hasLoadMore = !newUsers.isEmpty
     }
@@ -103,6 +139,7 @@ public final class UsersListViewModel: ObservableObject, UsersListViewModelInput
     
     public func refreshUsers() {
         currentPage = 0
+        state = .refresh
         usersListUseCase.removeAllCached()
         fetchUsers()
     }
