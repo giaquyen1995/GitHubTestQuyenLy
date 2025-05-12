@@ -65,7 +65,7 @@ public final class UserDetailViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func formatFollow(for follow: Int, max: Int = 100) -> String {
+    private func formatFollow(for follow: Int, max: Int = 100) -> String {
         return follow > max ? "\(max)+" : "\(follow)"
     }
 

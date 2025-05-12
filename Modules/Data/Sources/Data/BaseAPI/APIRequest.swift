@@ -25,7 +25,6 @@ public protocol APIRequest {
 }
 
 public extension APIRequest {
-    
     var baseUrl: String {
         return "https://api.github.com"
     }
@@ -37,28 +36,34 @@ public extension APIRequest {
     }
     
     var urlRequest: URLRequest? {
-        guard var components = URLComponents(string: baseUrl + path) else { return nil }
+        guard let url = buildURL() else { return nil }
         
-        components.queryItems = queryItems
-      
-        guard let url = components.url else { return nil }
-
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
+        applyHeaders(to: &request)
+        applyBody(to: &request)
         
+        return request
+    }
+    
+    private func buildURL() -> URL? {
+        guard var components = URLComponents(string: baseUrl + path) else { return nil }
+        components.queryItems = queryItems
+        return components.url
+    }
+    
+    private func applyHeaders(to request: inout URLRequest) {
         headers?.forEach { key, value in
             request.addValue(value, forHTTPHeaderField: key)
         }
+    }
     
-        if let parameters = parameters {
-            do {
-                request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
-            } catch {
-                print("Error serializing parameters: \(error)")
-                return nil
-            }
+    private func applyBody(to request: inout URLRequest) {
+        guard let parameters = parameters else { return }
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
+        } catch {
+            print("Error serializing parameters: \(error)")
         }
-        
-        return request
     }
 }

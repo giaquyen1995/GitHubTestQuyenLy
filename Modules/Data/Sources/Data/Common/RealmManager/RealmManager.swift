@@ -53,17 +53,14 @@ public final class RealmManager: RealmManagerProtocol {
         }
     }
     
-    // Write a single object
     public func write<T: Object>(_ object: T) throws {
         try writeToRealm([object])
     }
     
-    // Write multiple objects
     public func write<T: Object>(_ objects: [T]) throws {
         try writeToRealm(objects)
     }
     
-    // Delete all objects of a given type
     public func deleteAll<T: Object>(_ type: T.Type) throws {
         guard let realm = realm else {
             throw RealmError.realmNotInitialized
