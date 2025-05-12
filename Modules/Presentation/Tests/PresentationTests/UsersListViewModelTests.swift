@@ -60,7 +60,7 @@ final class UsersListViewModelTests: XCTestCase {
         
         sut.fetchUsers()
         
-        sut.$users
+        sut.$state
             .dropFirst()
             .sink { _ in
                 expectation.fulfill()
@@ -138,8 +138,8 @@ final class UsersListViewModelTests: XCTestCase {
         sut.loadUsers()
         
         // Wait for initial load
-        sut.$users
-            .filter { !$0.isEmpty }
+        sut.$state
+            .filter { !$0.users.isEmpty }
             .first()
             .sink { _ in
                 loadExpectation.fulfill()
@@ -152,9 +152,9 @@ final class UsersListViewModelTests: XCTestCase {
         let refreshExpectation = expectation(description: "Should refresh users")
         mockUseCase.mockUsers = refreshedUsers
         
-        let refreshSubscription = sut.$users
+        let refreshSubscription = sut.$state
             .dropFirst()
-            .filter { $0 == refreshedUsers }
+            .filter { $0.users == refreshedUsers }
             .first()
             .sink { _ in
                 refreshExpectation.fulfill()

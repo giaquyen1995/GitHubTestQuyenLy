@@ -6,8 +6,9 @@ final class MockUserListUseCase: UsersListUseCaseProtocol {
     var mockError: Error?
     var mockUsers: [UserEntity] = []
     var mockCachedUsers: [UserEntity] = []
-    var pagingConfiguration: PagingConfiguration = UserListPagingConfiguration()
     var saveCachedUsersCalled = false
+    var pageSize: Int = 20
+    var removeAllCachedCalled = false
     
     func fetchUsers(since: Int) -> AnyPublisher<[UserEntity], Error> {
         if let error = mockError {
@@ -25,5 +26,10 @@ final class MockUserListUseCase: UsersListUseCaseProtocol {
     func saveCachedUsers(_ users: [UserEntity]) {
         saveCachedUsersCalled = true
         mockCachedUsers = users
+    }
+    
+    func removeAllCached() {
+        removeAllCachedCalled = true
+        mockCachedUsers.removeAll()
     }
 }
