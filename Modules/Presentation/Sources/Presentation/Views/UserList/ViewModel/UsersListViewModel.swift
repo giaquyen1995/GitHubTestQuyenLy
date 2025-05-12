@@ -9,37 +9,6 @@ import Foundation
 import Domain
 import Combine
 
-public enum UsersListState {
-    case idle
-    case loading
-    case loaded([UserEntity])
-    case loadMore([UserEntity])
-    case refresh
-    case error(String)
-    
-    var users: [UserEntity] {
-        switch self {
-        case .loaded(let users): return users
-        case .loadMore(let oldUsers): return oldUsers
-        default: return []
-        }
-    }
-    
-    var isLoading: Bool {
-        switch self {
-        case .loading, .loadMore: return true
-        default: return false
-        }
-    }
-    
-    var errorMessage: String {
-        switch self {
-        case .error(let message): return message
-            default: return ""
-        }
-    }
-}
-
 public protocol UsersListViewModelInput {
     func loadUsers()
     func fetchUsers()
@@ -67,7 +36,6 @@ public final class UsersListViewModel: ObservableObject, UsersListViewModelInput
     // MARK: - Output Properties
     public var users: [UserEntity] { state.users }
     public var isLoading: Bool { state.isLoading }
-    public var isLoadMore: Bool { state.isLoading }
     public var errorMessage: String { state.errorMessage }
     
     public init(usersListUseCase: UsersListUseCaseProtocol) {
@@ -83,13 +51,13 @@ public final class UsersListViewModel: ObservableObject, UsersListViewModelInput
         fetchUsers()
     }
     
-    private func loadUsersFromCache() {
-        let cachedUsers = usersListUseCase.getCachedUsers()
-        if !cachedUsers.isEmpty {
-            self.state = .loaded(cachedUsers)
-        }
+    public func refreshUsers() {
+        currentPage = 0
+        state = .refresh
+        usersListUseCase.removeAllCached()
+        fetchUsers()
     }
-    
+
     public func fetchUsers() {
         guard !isLoading, hasLoadMore else { return }
         state = currentPage == 0 ? .loading : .loadMore(self.users)
@@ -105,6 +73,13 @@ public final class UsersListViewModel: ObservableObject, UsersListViewModelInput
                 self.updateUsersList(users, since: since)
             }
             .store(in: &cancellables)
+    }
+    
+    private func loadUsersFromCache() {
+        let cachedUsers = usersListUseCase.getCachedUsers()
+        if !cachedUsers.isEmpty {
+            self.state = .loaded(cachedUsers)
+        }
     }
     
     private func handleCompletion(_ completion: Subscribers.Completion<Error>) {
@@ -135,12 +110,5 @@ public final class UsersListViewModel: ObservableObject, UsersListViewModelInput
         return users.filter { user in
             seen.insert(user.login).inserted
         }
-    }
-    
-    public func refreshUsers() {
-        currentPage = 0
-        state = .refresh
-        usersListUseCase.removeAllCached()
-        fetchUsers()
     }
 }
