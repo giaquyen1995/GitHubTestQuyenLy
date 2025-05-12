@@ -12,15 +12,14 @@ import Presentation
 
 @main
 struct GitHubTestQuyenLyApp: App {
-    @StateObject var router = Router()
-    private let navigationHandler = AppNavigationHandler(diContainer: AppDIContainer.shared)
+    @StateObject var router = AppDIContainer.shared.makeRouter()
 
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $router.path) {
                 AppDIContainer.shared.makeUsersListView()
                     .navigationDestination(for: AppDestination.self) { des in
-                        router.handleNavigation(using: navigationHandler, for: des)
+                        router.handleNavigation(for: des)
                     }
             }
             .environmentObject(router)

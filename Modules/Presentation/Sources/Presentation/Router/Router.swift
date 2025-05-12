@@ -6,11 +6,15 @@
 //
 
 import Foundation
+import SwiftUI
 
 public class Router: ObservableObject, RouterProtocol {
     @Published public var path = [AppDestination]()
+    private let navigationHandler: NavigationHandler
     
-    public init() { }
+    public init(navigationHandler: NavigationHandler) {
+        self.navigationHandler = navigationHandler
+    }
     
     public func navigate(to destination: Destination) {
         path.append(destination)
@@ -22,5 +26,9 @@ public class Router: ObservableObject, RouterProtocol {
     
     public func navigateToRoot() {
         path.removeLast(path.count)
+    }
+    
+    public func handleNavigation(for destination: AppDestination) -> AnyView {
+        return navigationHandler.viewFor(destination: destination)
     }
 }

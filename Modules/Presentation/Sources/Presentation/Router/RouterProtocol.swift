@@ -14,4 +14,5 @@ public protocol RouterProtocol {
     func navigate(to destination: Destination)
     func navigateBack()
     func navigateToRoot()
+    func handleNavigation(for destination: AppDestination) -> AnyView
 }
