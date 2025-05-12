@@ -9,16 +9,29 @@ import Foundation
 import Domain
 import Combine
 
-public final class UserDetailViewModel: ObservableObject {
-    @Published private(set) var user: UserEntity?
-    @Published private(set) var errorMessage: String = ""
-    @Published var showErrorAlert: Bool = false
+public protocol UserDetailViewModelInput {
+    func fetchUserDetails()
+}
+
+public protocol UserDetailViewModelOutput {
+    var user: UserEntity? { get }
+    var errorMessage: String { get }
+    var showErrorAlert: Bool { get set }
+    var followersCount: String { get }
+    var followingCount: String { get }
+}
+
+public final class UserDetailViewModel: ObservableObject, UserDetailViewModelInput, UserDetailViewModelOutput {
+    // MARK: - Output Properties
+    @Published public private(set) var user: UserEntity?
+    @Published public private(set) var errorMessage: String = ""
+    @Published public var showErrorAlert: Bool = false
     
-    var followersCount: String {
+    public var followersCount: String {
         return formatFollow(for: user?.followers ?? 0)
     }
     
-    var followingCount: String {
+    public var followingCount: String {
         return formatFollow(for: user?.following ?? 0)
     }
     
@@ -34,7 +47,7 @@ public final class UserDetailViewModel: ObservableObject {
         self.userDetailUseCase = userDetailUseCase
     }
     
-    func fetchUserDetails() {
+    public func fetchUserDetails() {
         userDetailUseCase.fetchUserDetails(loginUserName: loginUserName)
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
@@ -49,7 +62,7 @@ public final class UserDetailViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    private func formatFollow(for follow: Int, max: Int = 100) -> String {
+    public func formatFollow(for follow: Int, max: Int = 100) -> String {
         return follow > max ? "\(max)+" : "\(follow)"
     }
 }

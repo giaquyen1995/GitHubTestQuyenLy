@@ -9,12 +9,27 @@ import Foundation
 import Domain
 import Combine
 
-public final class UsersListViewModel: ObservableObject {
-    @Published private(set) var users: [UserEntity] = []
-    @Published private(set) var isLoading = false
-    @Published private(set) var hasLoadMore = true
-    @Published private(set) var errorMessage: String = ""
-    @Published var showErrorAlert: Bool = false
+public protocol UsersListViewModelInput {
+    func loadUsers()
+    func fetchUsers()
+    func refreshUsers()
+    func isLastItem(_ user: UserEntity) -> Bool
+}
+
+public protocol UsersListViewModelOutput {
+    var users: [UserEntity] { get }
+    var isLoading: Bool { get }
+    var hasLoadMore: Bool { get }
+    var errorMessage: String { get }
+    var showErrorAlert: Bool { get set }
+}
+
+public final class UsersListViewModel: ObservableObject, UsersListViewModelInput, UsersListViewModelOutput {
+    @Published public private(set) var users: [UserEntity] = []
+    @Published public private(set) var isLoading = false
+    @Published public private(set) var hasLoadMore = true
+    @Published public private(set) var errorMessage: String = ""
+    @Published public var showErrorAlert: Bool = false
     
     private(set) var currentPage = 0
     private var cancellables: Set<AnyCancellable> = []
@@ -24,11 +39,11 @@ public final class UsersListViewModel: ObservableObject {
         self.usersListUseCase = usersListUseCase
     }
     
-    func isLastItem(_ user: UserEntity) -> Bool {
+    public func isLastItem(_ user: UserEntity) -> Bool {
         return user.id == users.last?.id
     }
     
-    func loadUsers() {
+    public func loadUsers() {
         loadUsersFromCache()
         fetchUsers()
     }
@@ -40,7 +55,7 @@ public final class UsersListViewModel: ObservableObject {
         }
     }
     
-    func fetchUsers() {
+    public func fetchUsers() {
         guard !isLoading, hasLoadMore else { return }
         isLoading = true
         let since = currentPage * usersListUseCase.pageSize
@@ -86,7 +101,7 @@ public final class UsersListViewModel: ObservableObject {
         }
     }
     
-    func refreshUsers() {
+    public func refreshUsers() {
         currentPage = 0
         users.removeAll()
         usersListUseCase.removeAllCached()
