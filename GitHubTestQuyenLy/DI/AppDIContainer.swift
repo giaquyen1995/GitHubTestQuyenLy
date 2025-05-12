@@ -10,7 +10,15 @@ import Data
 import Presentation
 import SwiftUI
 
-final class AppDIContainer {
+public protocol AppDIContainerProtocol {
+    func makeUserDetailViewModel(loginName: String) -> UserDetailViewModel
+    func makeUsersListViewModel() -> UsersListViewModel
+    
+    func makeUserDetailView(loginName: String) -> AnyView
+    func makeUsersListView() -> AnyView
+}
+
+final class AppDIContainer: AppDIContainerProtocol {
     static let shared = AppDIContainer()
     private init() {}
 
@@ -30,12 +38,12 @@ final class AppDIContainer {
         return UsersListViewModel(usersListUseCase: usersListUseCase)
     }
     
-    func makeUserDetailView(loginName: String) -> some View {
-        return UserDetailView(viewModel: makeUserDetailViewModel(loginName: loginName))
+    func makeUserDetailView(loginName: String) -> AnyView {
+        return AnyView(UserDetailView(viewModel: makeUserDetailViewModel(loginName: loginName)))
     }
     
-    func makeUsersListView() -> some View {
-        return UsersListView(viewModel: makeUsersListViewModel())
+    func makeUsersListView() -> AnyView {
+        return AnyView(UsersListView(viewModel: makeUsersListViewModel()))
     }
 }
 
