@@ -19,7 +19,6 @@ public protocol UsersListViewModelInput {
 public protocol UsersListViewModelOutput {
     var users: [UserEntity] { get }
     var isLoading: Bool { get }
-    var hasLoadMore: Bool { get }
     var errorMessage: String { get }
     var showErrorAlert: Bool { get set }
 }
@@ -33,7 +32,6 @@ public final class UsersListViewModel: ObservableObject, UsersListViewModelInput
     private var cancellables: Set<AnyCancellable> = []
     private let usersListUseCase: UsersListUseCaseProtocol
     
-    // MARK: - Output Properties
     public var users: [UserEntity] { state.users }
     public var isLoading: Bool { state.isLoading }
     public var errorMessage: String { state.errorMessage }
@@ -41,7 +39,9 @@ public final class UsersListViewModel: ObservableObject, UsersListViewModelInput
     public init(usersListUseCase: UsersListUseCaseProtocol) {
         self.usersListUseCase = usersListUseCase
     }
-    
+}
+
+extension UsersListViewModel {
     public func isLastItem(_ user: UserEntity) -> Bool {
         return user.id == users.last?.id
     }
@@ -57,7 +57,7 @@ public final class UsersListViewModel: ObservableObject, UsersListViewModelInput
         usersListUseCase.removeAllCached()
         fetchUsers()
     }
-
+    
     public func fetchUsers() {
         guard !isLoading, hasLoadMore else { return }
         state = currentPage == 0 ? .loading : .loadMore(self.users)
@@ -74,22 +74,24 @@ public final class UsersListViewModel: ObservableObject, UsersListViewModelInput
             }
             .store(in: &cancellables)
     }
-    
-    private func loadUsersFromCache() {
+}
+
+private extension UsersListViewModel {
+    func loadUsersFromCache() {
         let cachedUsers = usersListUseCase.getCachedUsers()
         if !cachedUsers.isEmpty {
             self.state = .loaded(cachedUsers)
         }
     }
     
-    private func handleCompletion(_ completion: Subscribers.Completion<Error>) {
+    func handleCompletion(_ completion: Subscribers.Completion<Error>) {
         if case .failure(let error) = completion {
             state = .error(error.localizedDescription)
             showErrorAlert = true
         }
     }
     
-    private func updateUsersList(_ newUsers: [UserEntity], since: Int) {
+    func updateUsersList(_ newUsers: [UserEntity], since: Int) {
         let uniqueNewUsers = removeDuplicates(from: newUsers)
         
         let updatedUsers: [UserEntity]
@@ -105,7 +107,7 @@ public final class UsersListViewModel: ObservableObject, UsersListViewModelInput
         hasLoadMore = !newUsers.isEmpty
     }
     
-    private func removeDuplicates(from users: [UserEntity]) -> [UserEntity] {
+    func removeDuplicates(from users: [UserEntity]) -> [UserEntity] {
         var seen = Set<String>()
         return users.filter { user in
             seen.insert(user.login).inserted

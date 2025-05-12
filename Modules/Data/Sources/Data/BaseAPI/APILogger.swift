@@ -1,8 +1,8 @@
 import Foundation
 
-public enum NetworkLogger {
+public enum APILogger {
     static func log(request: URLRequest) {
-        print("\n - - - - - - - - - - OUTGOING - - - - - - - - - - \n")
+        print("\n - - - - - - - - - - REQUEST - - - - - - - - - - \n")
         defer { print("\n - - - - - - - - - -  END - - - - - - - - - - \n") }
         
         let urlAsString = request.url?.absoluteString ?? ""
@@ -34,7 +34,7 @@ public enum NetworkLogger {
     }
     
     static func log(response: URLResponse?, data: Data?, error: Error?) {
-        print("\n - - - - - - - - - - INCOMING - - - - - - - - - - \n")
+        print("\n - - - - - - - - - - RESPONSE - - - - - - - - - - \n")
         defer { print("\n - - - - - - - - - -  END - - - - - - - - - - \n") }
         
         let logOutput = generateLogOutput(response: response, data: data, error: error)
@@ -46,10 +46,6 @@ public enum NetworkLogger {
         
         if let httpResponse = response as? HTTPURLResponse {
             output += "Status Code: \(httpResponse.statusCode)\n"
-            output += "Response Headers:\n"
-            for (key, value) in httpResponse.allHeaderFields {
-                output += "\(key): \(value)\n"
-            }
         }
         
         if let responseData = data {

@@ -44,7 +44,7 @@ public final class APIService: APIServiceProtocol {
         }
         
         if shouldLogNetworkCalls {
-            NetworkLogger.log(request: urlRequest)
+            APILogger.log(request: urlRequest)
         }
         
         return session.dataTaskPublisher(for: urlRequest)
@@ -53,7 +53,7 @@ public final class APIService: APIServiceProtocol {
                 guard let self = self else { throw APIError.unknownError(message: "Service deallocated") }
                 
                 if self.shouldLogNetworkCalls {
-                    NetworkLogger.log(response: response, data: data, error: nil)
+                    APILogger.log(response: response, data: data, error: nil)
                 }
                 
                 try self.validateResponse(response, data: data)
