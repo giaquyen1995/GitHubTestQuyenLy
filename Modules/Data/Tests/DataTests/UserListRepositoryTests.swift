@@ -103,7 +103,7 @@ final class UserListRepositoryTests: XCTestCase {
     }
     
     func test_saveCacheUsers_success() {
-        let mockUser = MockFactory.createMockUserDTO().toEntity()
+        let mockUser = MockFactory.createMockUserEntity()
         
         sut.saveCacheUsers([mockUser])
         
@@ -121,9 +121,9 @@ final class UserListRepositoryTests: XCTestCase {
     
     func test_saveCacheUsers_multipleUsers() {
         let mockUsers = [
-            MockFactory.createMockUserDTO(login: "user1").toEntity(),
-            MockFactory.createMockUserDTO(login: "user2").toEntity(),
-            MockFactory.createMockUserDTO(login: "user3").toEntity()
+            MockFactory.createMockUserEntity(login: "user1"),
+            MockFactory.createMockUserEntity(login: "user2"),
+            MockFactory.createMockUserEntity(login: "user3")
         ]
         
         sut.saveCacheUsers(mockUsers)
@@ -195,6 +195,21 @@ final class UserListRepositoryTests: XCTestCase {
         wait(for: [expectation], timeout: 1)
         XCTAssertNil(receivedError)
         XCTAssertEqual(receivedUsers?.count, 1)
+    }
+    
+    func test_removeAllCached_success() {
+        let mockUsers = [MockFactory.createMockRealmUser()]
+        mockLocalDataSource.mockCachedUsers = mockUsers
+        
+        var cachedUsers = sut.getCachedUsers()
+        XCTAssertEqual(cachedUsers.count, 1)
+        
+        sut.removeAllCached()
+        
+        XCTAssertTrue(mockLocalDataSource.didCallRemoveAllCached)
+        
+        XCTAssertNil(mockLocalDataSource.mockCachedUsers)
+        XCTAssertNil(mockLocalDataSource.savedUsers)
     }
 }
 

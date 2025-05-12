@@ -110,4 +110,44 @@ final class RealmManagerTests: XCTestCase {
             XCTAssertEqual(error as? RealmError, .realmNotInitialized)
         }
     }
+    
+    func test_removeAll_success() throws {
+        let users = ["user1", "user2", "user3"].map { login in
+            let user = RealmUser()
+            user.login = login
+            return user
+        }
+        
+        try realmManager.write(users)
+        
+        var results = realmManager.get(RealmUser.self)
+        XCTAssertEqual(results.count, 3)
+        
+        try realmManager.deleteAll(RealmUser.self)
+        
+        results = realmManager.get(RealmUser.self)
+        XCTAssertEqual(results.count, 0)
+    }
+    
+    func test_removeAll_withEmptyDatabase() throws {
+        let initialResults = realmManager.get(RealmUser.self)
+        XCTAssertEqual(initialResults.count, 0)
+        
+        try realmManager.deleteAll(RealmUser.self)
+        
+        let results = realmManager.get(RealmUser.self)
+        XCTAssertEqual(results.count, 0)
+    }
+    
+    func test_removeAll_withInvalidConfiguration() {
+        let invalidConfig = Realm.Configuration(
+            fileURL: FileManager.default.temporaryDirectory.appendingPathComponent("invalid/realm/path.realm")
+        )
+        let invalidManager = RealmManager(configuration: invalidConfig)
+        
+        XCTAssertThrowsError(try invalidManager.deleteAll(RealmUser.self)) { error in
+            XCTAssertTrue(error is RealmError)
+            XCTAssertEqual(error as? RealmError, .realmNotInitialized)
+        }
+    }
 }
