@@ -1,5 +1,5 @@
 //
-//  CachedAsyncImageView.swift
+//  ImageLoaderView.swift
 //  Presentation
 //
 //  Created by QuyenLG on 10/5/25.
@@ -7,7 +7,7 @@
 import SwiftUI
 
 public struct ImageLoaderView: View {
-    @StateObject private var imageLoader: ImageLoaderService
+    @ObservedObject private var imageLoader: ImageLoaderService
         
     private let url: URL?
     private let imageSize: CGFloat
@@ -22,7 +22,7 @@ public struct ImageLoaderView: View {
         self.url = url
         self.imageSize = imageSize
         self.placeholderColor = placeholderColor
-        _imageLoader = StateObject(wrappedValue: imageLoader ?? ImageLoaderService())
+        self.imageLoader = imageLoader ?? ImageLoaderService()
     }
         
     public var body: some View {

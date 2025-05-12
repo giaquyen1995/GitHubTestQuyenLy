@@ -14,28 +14,12 @@ public final class UserDetailViewModel: ObservableObject {
     @Published private(set) var errorMessage: String = ""
     @Published var showErrorAlert: Bool = false
     
-    var avatar: URL? {
-        return URL(string: user?.avatarURL ?? "")
-    }
-    
-    var name: String {
-        return user?.login ?? ""
-    }
-    
-    var location: String {
-        return user?.location ?? ""
-    }
-    
     var followersCount: String {
         return formatFollow(for: user?.followers ?? 0)
     }
     
     var followingCount: String {
         return formatFollow(for: user?.following ?? 0)
-    }
-    
-    var blog: String {
-        return user?.blog ?? "No blog"
     }
     
     private var cancellables: Set<AnyCancellable> = []
@@ -68,5 +52,4 @@ public final class UserDetailViewModel: ObservableObject {
     private func formatFollow(for follow: Int, max: Int = 100) -> String {
         return follow > max ? "\(max)+" : "\(follow)"
     }
-
 }

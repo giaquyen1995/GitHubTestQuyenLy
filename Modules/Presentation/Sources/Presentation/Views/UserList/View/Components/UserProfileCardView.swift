@@ -26,28 +26,28 @@ public struct UserProfileCardView: View {
     }
     
     public var body: some View {
-        HStack(alignment: .top, spacing: UIConstants.Padding.large) {
+        HStack(alignment: .top, spacing: PaddingConstants.large) {
             profileImageView
             profileDetailsView
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(.white)
-        .cornerRadius(UIConstants.CornerRadius.small)
+        .cornerRadius(CornerRadiusConstants.small)
         .modifier(CustomShadowView(shadowColor: .black.opacity(0.3), shadowRadius: 3.0))
-        .padding(.horizontal, UIConstants.Padding.large)
-        .padding(.vertical, UIConstants.Padding.medium)
+        .padding(.horizontal, PaddingConstants.large)
+        .padding(.vertical, PaddingConstants.medium)
     }
     
     private var profileImageView: some View {
         ImageLoaderView(url: avatar, imageSize: 80)
-            .padding(UIConstants.Padding.small)
+            .padding(PaddingConstants.small)
             .background(.gray.opacity(0.08))
-            .cornerRadius(UIConstants.CornerRadius.small)
-            .padding([.top, .leading, .bottom], UIConstants.Padding.large)
+            .cornerRadius(CornerRadiusConstants.small)
+            .padding([.top, .leading, .bottom], PaddingConstants.large)
     }
     
     private var profileDetailsView: some View {
-        VStack(alignment: .leading, spacing: UIConstants.Padding.medium) {
+        VStack(alignment: .leading, spacing: PaddingConstants.medium) {
             Text(name)
                 .font(.headline)
             Divider()
@@ -59,7 +59,7 @@ public struct UserProfileCardView: View {
                 locationView(locationName: location)
             }
         }
-        .padding([.top, .trailing, .bottom], UIConstants.Padding.large)
+        .padding([.top, .trailing, .bottom], PaddingConstants.large)
     }
     
     private func hyperlinkView(for link: String) -> some View {
@@ -73,7 +73,7 @@ public struct UserProfileCardView: View {
     }
     
     private func locationView(locationName: String) -> some View {
-        HStack(spacing: UIConstants.Padding.medium) {
+        HStack(spacing: PaddingConstants.medium) {
             Image(systemName: "location.fill")
                 .font(.subheadline)
             

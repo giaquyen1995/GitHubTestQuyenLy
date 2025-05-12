@@ -8,15 +8,15 @@
 import SwiftUI
 
 public struct UserDetailView: View {
-    @StateObject private var viewModel: UserDetailViewModel
+    @ObservedObject private var viewModel: UserDetailViewModel
     @EnvironmentObject var router: Router
     
     public init(viewModel: UserDetailViewModel) {
-        self._viewModel = StateObject(wrappedValue: viewModel)
+        self.viewModel = viewModel
     }
     
     public var body: some View {
-        VStack(spacing: UIConstants.Padding.large) {
+        VStack(spacing: PaddingConstants.large) {
             userProfileView
             userStatsView
             userBlogView
@@ -47,9 +47,9 @@ public struct UserDetailView: View {
     
     private var userProfileView: some View {
         UserProfileCardView(
-            avatar: viewModel.avatar,
-            name: viewModel.name,
-            location: viewModel.location
+            avatar: URL(string: viewModel.user?.avatarURL ?? ""),
+            name: viewModel.user?.login ?? "",
+            location: viewModel.user?.location ?? ""
         )
     }
     
@@ -70,17 +70,17 @@ public struct UserDetailView: View {
     }
     
     private var userBlogView: some View {
-        VStack(alignment: .leading, spacing: UIConstants.Padding.medium) {
+        VStack(alignment: .leading, spacing: PaddingConstants.medium) {
             Text("Blog")
                 .font(.title2)
                 .fontWeight(.semibold)
                 .foregroundColor(.black)
             
-            Text(viewModel.blog)
+            Text(viewModel.user?.blog ?? "")
                 .font(.subheadline)
                 .foregroundColor(.gray)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, UIConstants.Padding.large)
+        .padding(.horizontal, PaddingConstants.large)
     }
 }

@@ -18,21 +18,15 @@ final class AppDIContainer {
         return APIService()
     }
     
-    private func makeUserListRepository() -> UserListRepositoryProtocol {
-        return UserListRepository(apiService: makeAPIService())
-    }
-    
-    private func makeUserDetailRepository() -> UserDetailRepositoryProtocol {
-        return UserDetailRepository(apiService: makeAPIService())
-    }
-    
     func makeUserDetailViewModel(loginName: String) -> UserDetailViewModel {
-        let userDetailUseCase = UserDetailUseCase(userDetailRepository: makeUserDetailRepository())
+        let userDetailRepository = UserDetailRepository(apiService: makeAPIService())
+        let userDetailUseCase = UserDetailUseCase(userDetailRepository: userDetailRepository)
         return UserDetailViewModel(loginUserName: loginName, userDetailUseCase: userDetailUseCase)
     }
     
     func makeUsersListViewModel() -> UsersListViewModel {
-        let usersListUseCase = UsersListUseCase(userListRepository: makeUserListRepository())
+        let userListRepository = UserListRepository(apiService: makeAPIService())
+        let usersListUseCase = UsersListUseCase(userListRepository: userListRepository)
         return UsersListViewModel(usersListUseCase: usersListUseCase)
     }
     

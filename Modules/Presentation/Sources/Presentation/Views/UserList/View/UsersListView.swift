@@ -11,10 +11,10 @@ import Data
 
 public struct UsersListView: View {
     @EnvironmentObject var router: Router
-    @StateObject private var viewModel: UsersListViewModel
+    @ObservedObject private var viewModel: UsersListViewModel
     
     public init(viewModel: UsersListViewModel) {
-        self._viewModel = StateObject(wrappedValue: viewModel)
+        self.viewModel = viewModel
     }
     
     public var body: some View {
@@ -61,7 +61,7 @@ public struct UsersListView: View {
                 HStack {
                     Spacer()
                     ProgressView()
-                        .frame(height: 44)
+                        .frame(height: 50)
                     Spacer()
                 }
             }

@@ -1,5 +1,5 @@
 //
-//  ImageLoader.swift
+//  ImageLoaderService.swift
 //  Presentation
 //
 //  Created by QuyenLG on 10/5/25.
