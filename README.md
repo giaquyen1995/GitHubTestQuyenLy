@@ -18,7 +18,7 @@ GitHubTestQuyenLy is a modern iOS application that showcases GitHub users with d
         <em>Users List</em>
       </td>
       <td align="center" width="33%" style="border: none;">
-        <img src="[screenshots/user_detail.png](https://github.com/user-attachments/assets/9f0e8b68-09f0-48f1-a27c-80e9c31630df)" alt="User Detail" width="100%"/>
+        <img src="https://github.com/user-attachments/assets/9f0e8b68-09f0-48f1-a27c-80e9c31630df" alt="User Detail" width="100%"/>
         <br/>
         <em>User Detail</em>
       </td>
