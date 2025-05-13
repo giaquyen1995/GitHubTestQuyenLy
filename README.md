@@ -4,9 +4,9 @@
 
 GitHubTestQuyenLy is a modern iOS application that showcases GitHub users with detailed profiles. Built using Clean Architecture principles and a modular design approach to ensure scalability, testability, and maintainability.
 
-![Demo](https://github.com/giaquyen1995/GitHubTestQuyenLy/issues/4#issue-3059968519) 
-![Users List](https://github.com/giaquyen1995/GitHubTestQuyenLy/issues/1#issue-3059910672)
-![User Detail](https://github.com/giaquyen1995/GitHubTestQuyenLy/issues/2#issue-3059912461)
+![Demo](https://github.com/user-attachments/assets/5c433fcc-b827-4cb4-be9b-733f538e1645) 
+![Users List](https://github.com/user-attachments/assets/f22b7011-e476-4878-ab81-d5c3ab790988)
+![User Detail](https://github.com/user-attachments/assets/9f0e8b68-09f0-48f1-a27c-80e9c31630df)
 
 ## 📋 Overview
 
@@ -83,7 +83,7 @@ This module is responsible for data interactions, including API and local storag
 
 ## 📊 Dependency Flow
 
-![Architecture Diagram](https://github.com/giaquyen1995/GitHubTestQuyenLy/issues/5#issue-3060053098)
+![Architecture Diagram](https://github.com/user-attachments/assets/335701f5-d9c4-4971-b316-c59603423bc7)
 
 | **Dependency Direction** | **Relationship** |
 | --- | --- |
