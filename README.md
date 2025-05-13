@@ -4,9 +4,27 @@
 
 GitHubTestQuyenLy is a modern iOS application that showcases GitHub users with detailed profiles. Built using Clean Architecture principles and a modular design approach to ensure scalability, testability, and maintainability.
 
-![Demo](https://github.com/user-attachments/assets/5c433fcc-b827-4cb4-be9b-733f538e1645) 
-![Users List](https://github.com/user-attachments/assets/f22b7011-e476-4878-ab81-d5c3ab790988)
-![User Detail](https://github.com/user-attachments/assets/9f0e8b68-09f0-48f1-a27c-80e9c31630df)
+<div align="center">
+  <table border="0" cellspacing="0" cellpadding="10" style="border-collapse: collapse;">
+    <tr>
+      <td align="center" width="33%" style="border: none;">
+        <img src="https://github.com/user-attachments/assets/5c433fcc-b827-4cb4-be9b-733f538e1645" alt="Demo" width="100%"/>
+        <br/>
+        <em>Demo</em>
+      </td>
+      <td align="center" width="33%" style="border: none;">
+        <img src="https://github.com/user-attachments/assets/f22b7011-e476-4878-ab81-d5c3ab790988" alt="Users List" width="100%"/>
+        <br/>
+        <em>Users List</em>
+      </td>
+      <td align="center" width="33%" style="border: none;">
+        <img src="[screenshots/user_detail.png](https://github.com/user-attachments/assets/9f0e8b68-09f0-48f1-a27c-80e9c31630df)" alt="User Detail" width="100%"/>
+        <br/>
+        <em>User Detail</em>
+      </td>
+    </tr>
+  </table>
+</div>
 
 ## 📋 Overview
 
