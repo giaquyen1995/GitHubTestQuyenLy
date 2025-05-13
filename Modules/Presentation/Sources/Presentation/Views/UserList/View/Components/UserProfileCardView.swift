@@ -37,7 +37,10 @@ public struct UserProfileCardView: View {
         .padding(.horizontal, PaddingConstants.large)
         .padding(.vertical, PaddingConstants.medium)
     }
-    
+   
+}
+
+private extension UserProfileCardView {
     private var profileImageView: some View {
         ImageLoaderView(url: avatar, imageSize: 80)
             .padding(PaddingConstants.small)

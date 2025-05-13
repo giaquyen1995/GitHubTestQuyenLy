@@ -18,7 +18,6 @@ public protocol UsersListUseCaseProtocol {
 
 public final class UsersListUseCase: UsersListUseCaseProtocol {
     public var pageSize: Int = 20
-    
     private let userListRepository: UserListRepositoryProtocol
     
     public init(
@@ -27,7 +26,10 @@ public final class UsersListUseCase: UsersListUseCaseProtocol {
         self.userListRepository = userListRepository
     }
     
-    public func fetchUsers(since: Int) -> AnyPublisher<[UserEntity], any Error> {
+}
+
+public extension UsersListUseCase {
+    func fetchUsers(since: Int) -> AnyPublisher<[UserEntity], any Error> {
         return userListRepository.fetchUsers(
             perPage: pageSize,
             since: since
@@ -39,15 +41,15 @@ public final class UsersListUseCase: UsersListUseCaseProtocol {
         .eraseToAnyPublisher()
     }
     
-    public func getCachedUsers() -> [UserEntity] {
+    func getCachedUsers() -> [UserEntity] {
         return userListRepository.getCachedUsers()
     }
     
-    public func saveCachedUsers(_ users: [UserEntity]) {
+    func saveCachedUsers(_ users: [UserEntity]) {
         userListRepository.saveCacheUsers(users)
     }
     
-    public func removeAllCached() {
+    func removeAllCached() {
         userListRepository.removeAllCached()
     }
 }

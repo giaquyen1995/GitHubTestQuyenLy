@@ -93,7 +93,6 @@
 				20E7231F2DCF0B0A00DCDBAE /* GitHubTestQuyenLy */,
 				20E723302DCF0B0B00DCDBAE /* GitHubTestQuyenLyTests */,
 				20E7233A2DCF0B0B00DCDBAE /* GitHubTestQuyenLyUITests */,
-				20E723E82DCF211900DCDBAE /* Frameworks */,
 				20E7231E2DCF0B0A00DCDBAE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -106,13 +105,6 @@
 				20E723372DCF0B0B00DCDBAE /* GitHubTestQuyenLyUITests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		20E723E82DCF211900DCDBAE /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

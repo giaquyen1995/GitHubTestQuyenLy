@@ -10,16 +10,18 @@ import RealmSwift
 
 public final class UserListLocalDataSource: UserListLocalDataSourceProtocol {
     private let realmManager: RealmManagerProtocol
-
+    
     public init(realmManager: RealmManagerProtocol = RealmManager()) {
         self.realmManager = realmManager
     }
+}
 
-    public func getCachedUsers() -> [RealmUser] {
+public extension UserListLocalDataSource {
+    func getCachedUsers() -> [RealmUser] {
         return realmManager.get(RealmUser.self)
     }
-
-    public func saveCacheUsers(_ users: [RealmUser]) {
+    
+    func saveCacheUsers(_ users: [RealmUser]) {
         do {
             try realmManager.write(users)
         } catch {
@@ -27,12 +29,11 @@ public final class UserListLocalDataSource: UserListLocalDataSourceProtocol {
         }
     }
     
-    public func removeAllCached() {
+    func removeAllCached() {
         do {
             try realmManager.deleteAll(RealmUser.self)
         } catch {
             print("Failed to remove cached users: \(error.localizedDescription)")
         }
     }
-    
 }

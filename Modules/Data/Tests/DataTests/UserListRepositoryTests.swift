@@ -201,7 +201,7 @@ final class UserListRepositoryTests: XCTestCase {
         let mockUsers = [MockFactory.createMockRealmUser()]
         mockLocalDataSource.mockCachedUsers = mockUsers
         
-        var cachedUsers = sut.getCachedUsers()
+        let cachedUsers = sut.getCachedUsers()
         XCTAssertEqual(cachedUsers.count, 1)
         
         sut.removeAllCached()

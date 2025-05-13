@@ -145,7 +145,7 @@ final class UsersListViewModelTests: XCTestCase {
         sut.$state
             .dropFirst()
             .filter { state in
-                if case .loaded(let users) = state {
+                if case .loaded(_) = state {
                     return true
                 }
                 return false

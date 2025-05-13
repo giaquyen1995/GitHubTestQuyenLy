@@ -19,8 +19,10 @@ public final class UserListRepository: UserListRepositoryProtocol {
         self.apiService = apiService
         self.localDataSource = localDataSource
     }
-    
-    public func fetchUsers(perPage: Int, since: Int) -> AnyPublisher<[UserEntity], any Error> {
+}
+
+public extension UserListRepository {
+    func fetchUsers(perPage: Int, since: Int) -> AnyPublisher<[UserEntity], any Error> {
         let request = GetUsersRequest(perPage: perPage, since: since)
         return apiService.request(
             request,
@@ -30,16 +32,16 @@ public final class UserListRepository: UserListRepositoryProtocol {
         .eraseToAnyPublisher()
     }
     
-    public func getCachedUsers() -> [UserEntity] {
+    func getCachedUsers() -> [UserEntity] {
         return localDataSource.getCachedUsers().map { $0.toDomain() }
     }
     
-    public func saveCacheUsers(_ users: [UserEntity]) {
+    func saveCacheUsers(_ users: [UserEntity]) {
         let realmUsers = users.map { $0.toRealmUser() }
         localDataSource.saveCacheUsers(realmUsers)
     }
     
-    public func removeAllCached() {
+    func removeAllCached() {
         localDataSource.removeAllCached()
     }
 }

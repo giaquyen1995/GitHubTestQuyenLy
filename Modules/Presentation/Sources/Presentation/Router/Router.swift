@@ -15,20 +15,22 @@ public class Router: ObservableObject, RouterProtocol {
     public init(navigationHandler: NavigationHandler) {
         self.navigationHandler = navigationHandler
     }
-    
-    public func navigate(to destination: Destination) {
+}
+
+public extension Router {
+    func navigate(to destination: Destination) {
         path.append(destination)
     }
     
-    public func navigateBack() {
+    func navigateBack() {
         path.removeLast()
     }
     
-    public func navigateToRoot() {
+    func navigateToRoot() {
         path.removeLast(path.count)
     }
     
-    public func handleNavigation(for destination: AppDestination) -> AnyView {
+    func handleNavigation(for destination: AppDestination) -> AnyView {
         return navigationHandler.viewFor(destination: destination)
     }
 }

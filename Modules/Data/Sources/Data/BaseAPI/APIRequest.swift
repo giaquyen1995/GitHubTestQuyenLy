@@ -45,7 +45,9 @@ public extension APIRequest {
         
         return request
     }
-    
+}
+
+private extension APIRequest {
     private func buildURL() -> URL? {
         guard var components = URLComponents(string: baseUrl + path) else { return nil }
         components.queryItems = queryItems

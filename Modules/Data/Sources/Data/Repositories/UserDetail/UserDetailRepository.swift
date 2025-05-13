@@ -16,8 +16,10 @@ public final class UserDetailRepository: UserDetailRepositoryProtocol {
     ) {
         self.apiService = apiService
     }
-    
-    public func fetchUserDetail(loginUserName: String) -> AnyPublisher<UserEntity, any Error> {
+}
+
+public extension UserDetailRepository {
+    func fetchUserDetail(loginUserName: String) -> AnyPublisher<UserEntity, any Error> {
         let request = GetUserDetailRequest(loginUserName: loginUserName)
         return apiService.request(
             request,

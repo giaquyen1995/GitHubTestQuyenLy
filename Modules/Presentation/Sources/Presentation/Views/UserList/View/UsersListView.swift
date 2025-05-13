@@ -36,6 +36,9 @@ public struct UsersListView: View {
         }
     }
     
+}
+
+private extension UsersListView {
     private var usersList: some View {
         ForEach(viewModel.users) { user in
             UserProfileCardView(

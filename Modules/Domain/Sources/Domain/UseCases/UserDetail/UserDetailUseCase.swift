@@ -19,7 +19,10 @@ public final class UserDetailUseCase: UserDetailUseCaseProtocol {
         self.userDetailRepository = userDetailRepository
     }
     
-    public func fetchUserDetails(loginUserName: String) -> AnyPublisher<UserEntity, any Error> {
+}
+
+public extension UserDetailUseCase {
+    func fetchUserDetails(loginUserName: String) -> AnyPublisher<UserEntity, any Error> {
         return userDetailRepository.fetchUserDetail(loginUserName: loginUserName)
     }
 }

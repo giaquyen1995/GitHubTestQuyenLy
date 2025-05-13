@@ -8,11 +8,11 @@ import SwiftUI
 
 public struct ImageLoaderView: View {
     @ObservedObject private var imageLoader: ImageLoaderService
-        
+    
     private let url: URL?
     private let imageSize: CGFloat
     private let placeholderColor: Color
-        
+    
     public init(
         url: URL?,
         imageSize: CGFloat,
@@ -24,8 +24,10 @@ public struct ImageLoaderView: View {
         self.placeholderColor = placeholderColor
         self.imageLoader = imageLoader ?? ImageLoaderService()
     }
-        
-    public var body: some View {
+}
+
+public extension ImageLoaderView {
+    var body: some View {
         Group {
             if let image = imageLoader.image {
                 loadedImageView(image: image)
@@ -37,7 +39,9 @@ public struct ImageLoaderView: View {
             await loadImage()
         }
     }
-    
+}
+
+private extension ImageLoaderView {
     @ViewBuilder
     private func loadedImageView(image: UIImage) -> some View {
         Image(uiImage: image)
@@ -55,7 +59,7 @@ public struct ImageLoaderView: View {
                     .fill(placeholderColor)
             )
     }
-        
+    
     @MainActor
     private func loadImage() async {
         guard let url = url else { return }

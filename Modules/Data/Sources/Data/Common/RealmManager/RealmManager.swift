@@ -30,8 +30,10 @@ public final class RealmManager: RealmManagerProtocol {
             print("Failed to initialize Realm: \(error.localizedDescription)")
         }
     }
-    
-    public func get<T: Object>(_ type: T.Type) -> [T] {
+}
+
+public extension RealmManager {
+    func get<T: Object>(_ type: T.Type) -> [T] {
         guard let realm = realm else {
             return []
         }
@@ -39,28 +41,15 @@ public final class RealmManager: RealmManagerProtocol {
         return Array(objects)
     }
     
-    private func writeToRealm<T: Object>(_ objects: [T], update: Realm.UpdatePolicy = .modified) throws {
-        guard let realm = realm else {
-            throw RealmError.realmNotInitialized
-        }
-        do {
-            try realm.write {
-                realm.add(objects, update: update)
-            }
-        } catch {
-            throw RealmError.failedToWrite
-        }
-    }
-    
-    public func write<T: Object>(_ object: T) throws {
+    func write<T: Object>(_ object: T) throws {
         try writeToRealm([object])
     }
     
-    public func write<T: Object>(_ objects: [T]) throws {
+    func write<T: Object>(_ objects: [T]) throws {
         try writeToRealm(objects)
     }
     
-    public func deleteAll<T: Object>(_ type: T.Type) throws {
+    func deleteAll<T: Object>(_ type: T.Type) throws {
         guard let realm = realm else {
             throw RealmError.realmNotInitialized
         }
@@ -75,3 +64,19 @@ public final class RealmManager: RealmManagerProtocol {
         }
     }
 }
+
+private extension RealmManager {
+    private func writeToRealm<T: Object>(_ objects: [T], update: Realm.UpdatePolicy = .modified) throws {
+        guard let realm = realm else {
+            throw RealmError.realmNotInitialized
+        }
+        do {
+            try realm.write {
+                realm.add(objects, update: update)
+            }
+        } catch {
+            throw RealmError.failedToWrite
+        }
+    }
+}
+

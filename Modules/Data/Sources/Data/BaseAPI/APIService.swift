@@ -13,13 +13,11 @@ public protocol APIServiceProtocol {
 }
 
 public final class APIService: APIServiceProtocol {
-    // MARK: - Properties
     private let session: URLSession
     private let decoder: JSONDecoder
     private let retryCount: Int
     private let shouldLogNetworkCalls: Bool
     
-    // MARK: - Initialization
     public init(
         session: URLSession = .shared,
         requestTimeout: TimeInterval = 30.0,
@@ -36,9 +34,10 @@ public final class APIService: APIServiceProtocol {
         self.retryCount = retryCount
         self.shouldLogNetworkCalls = shouldLogNetworkCalls
     }
-    
-    // MARK: - Public Methods
-    public func request<T: Codable>(_ request: APIRequest, responseType: T.Type) -> AnyPublisher<T, Error> {
+}
+
+public extension APIService {
+    func request<T: Codable>(_ request: APIRequest, responseType: T.Type) -> AnyPublisher<T, Error> {
         guard let urlRequest = request.urlRequest else {
             return Fail(error: APIError.invalidURL).eraseToAnyPublisher()
         }
@@ -67,7 +66,9 @@ public final class APIService: APIServiceProtocol {
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
+}
 
+private extension APIService {
     private func validateResponse(_ response: URLResponse, data: Data) throws {
         guard let httpResponse = response as? HTTPURLResponse else {
             throw APIError.invalidResponse

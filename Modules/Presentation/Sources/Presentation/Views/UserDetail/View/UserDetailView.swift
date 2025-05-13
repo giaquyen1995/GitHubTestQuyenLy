@@ -44,7 +44,9 @@ public struct UserDetailView: View {
             Text(viewModel.errorMessage)
         }
     }
-    
+}
+
+private extension UserDetailView {
     private var userProfileView: some View {
         UserProfileCardView(
             avatar: URL(string: viewModel.user?.avatarURL ?? ""),
